@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Geolocation</title>
+<style>
+b {
+    font-family: "Calibri";
+    font-size: 25px;
+    color: rgb(72, 4, 255);
+}
+p {
+     font-family: "Calibri";
+    font-size: 15px;
+    color: grey;
+}
+
+nav {
+    line-height:30px;
+    background-color:white;
+    height:300px;
+    width:300px;
+    float:left;
+    padding:5px;          
+}
+section {
+    width:250px;
+    float:left;
+    padding:10px;        
+}
+footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px;         
+}
+form { 
+    font-family: "Calibri";
+    outline-color: grey;
+    border-radius: 12px;
+
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid grey;
+    border-radius: 9px;
+}
+
+input[type=txt] {
+    color : blue;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid blue;
+    border-radius: 9px;
+}
+
+.button {
+    background-color: rgb(72, 4, 255);
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 8px 0;
+    cursor: pointer;
+}
+.button {border-radius: 12px;}
+
+#map {
+        height: 100%;
+     }
+
+  /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+</style>
+</head>
+<body>
+
+<nav>
+    <b>Here comes the sun!<br></b><p>
+        <center><p>dudududu.....<br></center> </p>
+        <p>Type the lat and the long coordinate values dan press the Process button. The location will be shown in
+        the map and the sunrise and sunset times will be in shown below.
+        </p>
+<form>
+  <input type="txt" value="Sunrise: 6;13;44 AM (WIB)" name="latitude"> 
+  <br>
+  <input type="txt" value="Sunset: 6:26;26 PM (WIB)" name="latitude" 12px>
+</form>
+
+<form>
+<input type="text" value="Latitude" onFocus="if(this.value=='Latitude'){this.value=''}" onBlur="if(this.value==''){this.value='Latitude'}" >
+<br>
+<input type="text" value="Longitude" onFocus="if(this.value=='Longitude'){this.value=''}" onBlur="if(this.value==''){this.value='Longitude'}" >
+</form>
+    <button class="button button">Process</button>
+</nav>
+
+<section>
+<h1>MAPS</h1>
+<div id="map" style="width:1000px;height:500px";>
+	
+</div>
+    <script>
+
+     //untuk memasukkan lattitude dan longitude
+      const submitButton = document.getElementById('submitButton');
+      submitButton.addEventListener('click', function(event){
+        const lat = document.getElementById('lat').value;
+        const lng = document.getElementById('lng').value;
+
+        setCenter(lat, lng);
+      })
+
+      function setCenter(lat, lng) {
+        var center = {lat: lat, lng: lng};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.HYBRID,
+            center: center
+        });
+
+        console.log('done');
+      }
+      function initMap() {
+        var del = {lat: 6.385674, lng: 99.148033};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.HYBRID,
+            center: del
+        });
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+    </script>
+	    <script async defer
+	    src="https://maps.googleapis.com/maps/api/js?callback=initMap">
+	    </script> 
+</section>
+</body>
+
+<!-- Mirrored from www.w3schools.com/html/tryit.asp?filename=tryhtml_layout_semantic by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 13 Mar 2016 11:02:55 GMT -->
+</html>
